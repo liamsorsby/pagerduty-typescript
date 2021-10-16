@@ -1,14 +1,6 @@
 
 module.exports = {
     root: true,
-    overrides: [
-        {
-          files: ['src/**/*.ts'],
-          parserOptions: {
-            project: ['./tsconfig.json'],
-          },
-        }
-      ],
     parser: '@typescript-eslint/parser',
     plugins: [
       '@typescript-eslint',
@@ -19,4 +11,16 @@ module.exports = {
       'prettier',
       'plugin:jest/recommended',
     ],
+    "rules": {
+      "jest/expect-expect": [
+        "error",
+        {
+          "assertFunctionNames": [
+            "expect",
+            "request.**.expect"
+          ]
+        }
+      ],
+      "jest/no-done-callback": ["warn"]
+    }
   };

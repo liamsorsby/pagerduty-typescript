@@ -5,6 +5,11 @@ import { IConfig } from './config/Config';
 import { Server as HttpServer } from 'http';
 import { webhooksRouter } from './router/webhooks';
 
+export interface IServer {
+  app: Express,
+  server: HttpServer
+}
+
 export class Server {
   private config: IConfig;
   private logger: Logger;
@@ -14,14 +19,16 @@ export class Server {
     this.logger = logger;
   }
 
-  start(): void {
+  start(done?: any): IServer {
     const app = express();
     this.setupServerSettings(app);
     this.setupRoutes(app);
 
-    const server = app.listen(this.config.port);
+    const server = app.listen(this.config.port, done);
     this.setupErrorHandlers(server);
     this.setupEventListeners(server);
+
+    return {app, server};
   }
 
   private setupServerSettings(app: Express): void {
